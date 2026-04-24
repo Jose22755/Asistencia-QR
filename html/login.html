@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Asistencia QR</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- TU CSS -->
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+
+<div class="login-container">
+  <div class="card-login">
+
+    <h2 class="titulo">Asistencia QR - UNICARIBE</h2>
+
+    <!-- EMAIL -->
+<input type="email" id="email" placeholder="Correo">
+<small id="error-email" class="error-text"></small>
+
+    <!-- PASSWORD -->
+<div class="password-container">
+  <input type="password" id="password" placeholder="Contraseña">
+  <i class="bi bi-eye-slash toggle-password" onclick="togglePassword()"></i>
+</div>
+<small id="error-password" class="error-text"></small>
+
+    <!-- SELECT ROL -->
+    <select id="rol">
+      <option value="">Selecciona rol</option>
+      <option value="estudiante">Estudiante</option>
+      <option value="profesor">Profesor</option>
+    </select>
+
+    <!-- LOGIN -->
+    <button id="btnLogin">
+      Iniciar Sesión
+    </button>
+
+    <div class="divider"></div>
+
+    <!-- REGISTRO -->
+    <button class="btn-secundario" id="btnRegistro">
+      Registrarse
+    </button>
+
+    <!-- GOOGLE -->
+    <button class="btn-secundario" id="btnGoogle">
+      <i class="bi bi-google"></i> Continuar con Google
+    </button>
+
+  </div>
+</div>
+
+<script type="module" src="../js/auth.js"></script>
+
+</body>
+</html>

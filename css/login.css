@@ -1,0 +1,163 @@
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #2c5364);
+  margin: 0;
+}
+
+/* CENTRADO TOTAL */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* TARJETA */
+.card-login {
+  background: #1c1c1c;
+  padding: 35px;
+  border-radius: 15px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* TÍTULO */
+.titulo {
+  color: white;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+/* INPUTS Y SELECT */
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+/* FOCUS BONITO */
+input:focus, select:focus {
+  box-shadow: 0 0 0 2px #00c9a7;
+  transform: scale(1.02);
+}
+
+/* BOTÓN PRINCIPAL */
+button {
+  width: 100%;
+  padding: 12px;
+  background: #00c9a7;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+/* HOVER BOTÓN */
+button:hover {
+  background: #00a386;
+  transform: translateY(-1px);
+}
+
+/* BOTÓN SECUNDARIO */
+.btn-secundario {
+  background: transparent;
+  border: 2px solid #00c9a7;
+  margin-top: 10px;
+}
+
+/* HOVER SECUNDARIO */
+.btn-secundario:hover {
+  background: #00c9a7;
+}
+
+/* DIVISOR */
+.divider {
+  height: 1px;
+  background: #444;
+  margin: 20px 0;
+}
+
+/* CONTENEDOR PASSWORD */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+/* INPUT PASSWORD */
+.password-container input {
+  padding-right: 45px;
+}
+
+/* OJITO PERFECTAMENTE CENTRADO */
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888;
+  font-size: 18px;
+  transition: 0.3s;
+  z-index: 10;
+}
+
+/* HOVER OJITO */
+.toggle-password:hover {
+  color: #00c9a7;
+}
+
+/* SELECT */
+select {
+  background: white;
+  color: #333;
+  cursor: pointer;
+}
+
+/* HOVER SELECT */
+select:hover {
+  background: #f1f1f1;
+}
+
+/* MENSAJES DE ERROR */
+.error-text {
+  color: #ff4d4d;
+  font-size: 13px;
+  text-align: left;
+  display: block;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+/* ANIMACIÓN ERROR */
+.input-error {
+  border: 2px solid #ff4d4d !important;
+  animation: shake 0.3s;
+  
+}
+
+/* KEYFRAMES */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* EFECTO INPUT CORRECTO (PRO) */
+.input-success {
+  border: 2px solid #00c9a7 !important;
+}
+
+/* TRANSICIÓN SUAVE GENERAL */
+* {
+  box-sizing: border-box;
+}
