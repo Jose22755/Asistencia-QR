@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - Asistencia QR</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/login.css">
+</head>
+
+<body>
+
+<div class="login-container">
+<div class="card-login card-registro">
+
+  <h2 class="titulo">Registro Estudiante</h2>
+
+  <!-- ROL -->
+  <input type="text" value="Rol: Estudiante" disabled>
+
+  <!-- NOMBRE -->
+  <input 
+    type="text" 
+    id="nombre" 
+    placeholder="Nombre completo"
+    autocomplete="name"
+  >
+
+  <!-- TIPO DOCUMENTO -->
+  <div class="select-container">
+    <select id="tipoDocumento">
+      <option value="" disabled selected hidden>Tipo de documento</option>
+      <option value="CC">Cédula de Ciudadanía</option>
+      <option value="TI">Tarjeta de Identidad</option>
+      <option value="CE">Cédula de Extranjería</option>
+      <option value="PAS">Pasaporte</option>
+    </select>
+    <span class="arrow">▼</span>
+  </div>
+
+  <!-- DOCUMENTO -->
+  <input 
+    type="text"
+    id="documento"
+    placeholder="Número de documento"
+    inputmode="numeric"
+    autocomplete="off"
+  >
+
+  <!-- CORREO -->
+  <input 
+    type="email"
+    id="email"
+    placeholder="Correo institucional"
+    autocomplete="email"
+  >
+
+  <!-- CONTRASEÑA -->
+  <div class="password-container">
+    <input 
+      type="password"
+      id="password"
+      placeholder="Contraseña"
+      autocomplete="new-password"
+    >
+    <i class="bi bi-eye-slash toggle-password"></i>
+  </div>
+
+  <!-- CONFIRMAR CONTRASEÑA -->
+<div class="password-container">
+  <input type="password" id="confirmPassword" placeholder="Confirmar contraseña">
+<i class="bi bi-eye-slash toggle-password toggle-confirm-password"></i></div>
+  <!-- PROGRAMA -->
+  <div class="select-container">
+    <select id="programa">
+      <option value="" disabled selected hidden>Selecciona tu programa</option>
+      <option>Ingeniería de Sistemas</option>
+      <option>Administración de Empresas</option>
+      <option>Contaduría Pública</option>
+      <option>Derecho</option>
+      <option>Psicología</option>
+      <option>Ingeniería Industrial</option>
+      <option>Negocios Internacionales</option>
+      <option>Comunicación Social</option>
+    </select>
+    <span class="arrow">▼</span>
+  </div>
+
+  <!-- SEMESTRE -->
+  <div class="select-container">
+    <select id="semestre">
+      <option value="" disabled selected hidden>Selecciona semestre</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+      <option>6</option>
+      <option>7</option>
+      <option>8</option>
+      <option>9</option>
+      <option>10</option>
+    </select>
+    <span class="arrow">▼</span>
+  </div>
+
+  <!-- BOTÓN -->
+  <button id="btnRegistro" type="button">
+    Registrarse
+  </button>
+
+  <div class="divider"></div>
+
+  <!-- LOGIN -->
+  <button 
+    class="btn-secundario"
+    type="button"
+    onclick="window.location.href='login.html'"
+  >
+    Ya tengo cuenta
+  </button>
+
+</div>
+</div>
+
+<script type="module" src="../js/registro.js"></script>
+
+</body>
+</html>

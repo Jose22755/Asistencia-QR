@@ -1,6 +1,5 @@
 // 🔥 IMPORTS FIREBASE
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider
@@ -16,13 +15,9 @@ import { auth, db } from "../js/firestore.js";
 
 const provider = new GoogleAuthProvider();
 
-// 🔥 CONTROL DE INTENTO
-let intentoEnvio = false;
-
 // 🔥 ELEMENTOS
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
-const rolInput = document.getElementById("rol");
 
 // 🔥 MENSAJES
 const emailError = document.createElement("small");
@@ -31,35 +26,33 @@ emailError.classList.add("error-text");
 const passError = document.createElement("small");
 passError.classList.add("error-text");
 
-const rolError = document.createElement("small");
-rolError.classList.add("error-text");
-
 emailInput.after(emailError);
 passwordInput.parentElement.after(passError);
-rolInput.after(rolError);
 
 // 🔥 ANIMACIÓN ERROR
 function marcarError(input, mensaje = "Campo obligatorio") {
-
   input.classList.add("input-error");
 
-  if (input === emailInput) {
-    emailError.textContent = mensaje;
-  }
-
-  if (input === passwordInput) {
-    passError.textContent = mensaje;
-  }
-
-  if (input === rolInput) {
-    rolError.textContent = mensaje;
-  }
+  if (input === emailInput) emailError.textContent = mensaje;
+  if (input === passwordInput) passError.textContent = mensaje;
 }
 
-// 🔥 VALIDACIÓN EN TIEMPO REAL (SUAVE)
+// 🔥 LIMPIAR ERRORES (MEJORADO)
+function limpiarErrores() {
+  document.querySelectorAll(".error-text").forEach(el => el.textContent = "");
+
+  document.querySelectorAll("input").forEach(el => {
+    el.classList.remove("input-error");
+    el.classList.remove("input-success"); // 🔥 clave
+  });
+}
+
+// 🔥 VALIDACIÓN EN TIEMPO REAL
 emailInput.addEventListener("input", () => {
+  emailInput.classList.remove("input-error");
+
   if (!validarEmail(emailInput.value)) {
-    emailError.textContent = "Correo inválido (Ej: usuario@dominio.com)";
+    emailError.textContent = "Correo inválido (Ej: usuario@unicaribe.edu.co)";
   } else {
     emailError.textContent = "";
     emailInput.classList.add("input-success");
@@ -67,99 +60,31 @@ emailInput.addEventListener("input", () => {
 });
 
 passwordInput.addEventListener("input", () => {
+  passwordInput.classList.remove("input-error");
+
   if (!validarPassword(passwordInput.value)) {
-    passError.textContent = "Mínimo 6 caracteres, un número y un símbolo (Ej: Juan123!)";
+    passError.textContent = "Mínimo 6 caracteres, un número y un símbolo (Ej: Juan123&)";
   } else {
     passError.textContent = "";
     passwordInput.classList.add("input-success");
   }
 });
 
-rolInput.addEventListener("change", () => {
-  if (!rolInput.value) {
-    rolError.textContent = "Selecciona un rol";
-  } else {
-    rolError.textContent = "";
-    rolInput.classList.add("input-success");
-  }
-});
-
-// 🔥 REGISTRO
-async function registrar(email, password) {
-
-  intentoEnvio = true;
-
-  if (!email || !password || !rolInput.value) {
-    Swal.fire("Error", "Completa todos los campos", "warning");
-
-    if (!email) marcarError(emailInput);
-    if (!password) marcarError(passwordInput);
-    if (!rolInput.value) {
-      rolError.textContent = "Campo obligatorio";
-      marcarError(rolInput);
-    }
-
-    return;
-  }
-
-  if (!validarEmail(email)) {
-    Swal.fire("Error", "Correo inválido", "error");
-    marcarError(emailInput);
-    return;
-  }
-
-  if (!validarPassword(password)) {
-    Swal.fire(
-      "Error",
-      "La contraseña debe tener mínimo 6 caracteres, un número y un símbolo (Ej: Juan123!)",
-      "warning"
-    );
-    marcarError(passwordInput);
-    return;
-  }
-
-  try {
-    mostrarLoader("Registrando...");
-
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-
-    await setDoc(doc(db, "usuarios", user.uid), {
-      email,
-      rol: rolInput.value,
-      creado: new Date()
-    });
-
-    Swal.fire("Éxito", "Usuario registrado", "success");
-
-  } catch (error) {
-    Swal.fire("Error", obtenerMensajeError(error), "error");
-  }
-}
-
 // 🔥 LOGIN
 async function login(email, password) {
 
-  intentoEnvio = true;
-
-  // LIMPIAR ERRORES
   limpiarErrores();
 
   let hayError = false;
 
-  // VALIDAR VACÍOS
+  // 🔥 VALIDAR VACÍOS
   if (!email) {
-    marcarError(emailInput, "Campo obligatorio");
+    marcarError(emailInput);
     hayError = true;
   }
 
   if (!password) {
-    marcarError(passwordInput, "Campo obligatorio");
-    hayError = true;
-  }
-
-  if (!rolInput.value) {
-    marcarError(rolInput, "Campo obligatorio");
+    marcarError(passwordInput);
     hayError = true;
   }
 
@@ -168,19 +93,14 @@ async function login(email, password) {
     return;
   }
 
-  // VALIDAR EMAIL
+  // 🔥 VALIDAR EMAIL (OK)
   if (!validarEmail(email)) {
     marcarError(emailInput, "Correo inválido");
     Swal.fire("Error", "Correo inválido", "error");
     return;
   }
 
-  // VALIDAR PASSWORD
-  if (!validarPassword(password)) {
-    marcarError(passwordInput, "Contraseña inválida");
-    Swal.fire("Error", "Contraseña inválida (Ej: Juan123!)", "warning");
-    return;
-  }
+  // ❌ ELIMINAMOS VALIDAR PASSWORD AQUÍ (IMPORTANTE)
 
   try {
     mostrarLoader("Iniciando sesión...");
@@ -190,9 +110,16 @@ async function login(email, password) {
 
     const docSnap = await getDoc(doc(db, "usuarios", user.uid));
 
-    let rol = "sin rol";
-    if (docSnap.exists()) {
-      rol = docSnap.data().rol;
+    if (!docSnap.exists()) {
+      Swal.fire("Error", "Usuario sin datos en BD", "error");
+      return;
+    }
+
+    const rol = docSnap.data().rol;
+
+    if (!rol) {
+      Swal.fire("Error", "Usuario sin rol asignado", "error");
+      return;
     }
 
     Swal.fire({
@@ -203,20 +130,69 @@ async function login(email, password) {
       showConfirmButton: false
     });
 
+    // 🔥 LIMPIAR INPUTS
+    emailInput.value = "";
+    passwordInput.value = "";
+
     setTimeout(() => {
-      window.location.href = "index.html";
+
+      // 🔥 REDIRECCIÓN POR ROL
+      if (rol === "estudiante") {
+        window.location.href = "index.html";
+      } else if (rol === "profesor") {
+        window.location.href = "profesor.html";
+      } else {
+        window.location.href = "index.html";
+      }
+
     }, 1500);
 
   } catch (error) {
+           console.log(error.code);
+   console.log(error.message);
 
-    marcarError(emailInput);
-    marcarError(passwordInput);
+    let mensaje = "Credenciales incorrectas";
 
-    Swal.fire("Error", "Credenciales incorrectas", "error");
+
+
+    // 🔥 ERROR NUEVO DE FIREBASE (CLAVE)
+    if (error.code === "auth/invalid-credential") {
+      marcarError(emailInput);
+      marcarError(passwordInput);
+      mensaje = "Correo o contraseña incorrectos";
+    }
+
+    else if (error.code === "auth/user-not-found") {
+      marcarError(emailInput, "Correo no registrado");
+      mensaje = "El correo no existe";
+    }
+
+    else if (error.code === "auth/wrong-password") {
+      marcarError(passwordInput, "Contraseña incorrecta");
+      mensaje = "Contraseña incorrecta";
+    }
+
+    else if (error.code === "auth/too-many-requests") {
+      mensaje = "Demasiados intentos, intenta más tarde";
+    }
+
+    else if (error.code === "auth/network-request-failed") {
+      mensaje = "Error de conexión";
+    }
+
+    else {
+      marcarError(emailInput);
+      marcarError(passwordInput);
+    }
+
+    // 🔥 LIMPIAR SUCCESS (VISUAL)
+    emailInput.classList.remove("input-success");
+    passwordInput.classList.remove("input-success");
+
+    Swal.fire("Error", mensaje, "error");
   }
 }
-
-// 🔥 GOOGLE
+// 🔥 GOOGLE LOGIN
 async function loginGoogle() {
   try {
     mostrarLoader("Conectando con Google...");
@@ -242,6 +218,8 @@ async function loginGoogle() {
     }, 1500);
 
   } catch (error) {
+       console.log(error.code);
+   console.log(error.message);
     Swal.fire("Error", obtenerMensajeError(error), "error");
   }
 }
@@ -258,6 +236,8 @@ function togglePassword() {
     icon.classList.replace("bi-eye", "bi-eye-slash");
   }
 }
+
+
 
 // 🔥 VALIDADORES
 function validarEmail(email) {
@@ -280,29 +260,34 @@ function mostrarLoader(msg) {
 // 🔥 ERRORES
 function obtenerMensajeError(error) {
   switch (error.code) {
-    case "auth/email-already-in-use":
-      return "Correo ya registrado";
     case "auth/too-many-requests":
       return "Demasiados intentos";
+    case "auth/popup-closed-by-user":
+      return "Cerraste Google";
     default:
       return "Error inesperado";
   }
 }
-function limpiarErrores() {
-  document.querySelectorAll(".error-text").forEach(el => el.textContent = "");
-  document.querySelectorAll("input, select").forEach(el => el.classList.remove("input-error"));
-}
+
 // 🔥 EVENTOS
 document.addEventListener("DOMContentLoaded", () => {
 
-  document.getElementById("btnLogin")
-    .addEventListener("click", () => login(emailInput.value, passwordInput.value));
+  document.getElementById("formLogin").addEventListener("submit", (e) => {
+    e.preventDefault();
 
-  document.getElementById("btnRegistro")
-    .addEventListener("click", () => registrar(emailInput.value, passwordInput.value));
+    login(
+      emailInput.value.trim(),
+      passwordInput.value.trim()
+    );
+  });
 
   document.getElementById("btnGoogle")
     .addEventListener("click", loginGoogle);
+
+  document.getElementById("btnRegistro")
+    .addEventListener("click", () => {
+      window.location.href = "registro.html";
+    });
 
   document.querySelector(".toggle-password")
     .addEventListener("click", togglePassword);
