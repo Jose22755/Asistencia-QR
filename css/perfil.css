@@ -1,0 +1,226 @@
+/* 🔥 RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* 🔥 BODY */
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:#f5f7fb;
+  min-height:100vh;
+  padding:30px 20px;
+}
+
+/* 🔥 CONTENEDOR */
+.container-perfil{
+  max-width:700px;
+  margin:auto;
+}
+
+/* 🔥 VOLVER */
+.volver-container{
+  margin-bottom:20px;
+}
+
+#btnVolver{
+  text-decoration:none;
+  color:#0d6efd;
+  font-weight:700;
+  font-size:16px;
+
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  transition:.3s;
+}
+
+#btnVolver:hover{
+  transform:translateX(-4px);
+}
+
+/* 🔥 CARD */
+.perfil-card{
+  background:white;
+  border-radius:25px;
+  padding:30px;
+  box-shadow:0 5px 18px rgba(0,0,0,.05);
+}
+
+/* 🔥 HEADER */
+.perfil-header{
+  text-align:center;
+  padding-bottom:25px;
+  border-bottom:1px solid #eee;
+}
+
+/* 🔥 FOTO */
+.perfil-img{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid #0d6efd;
+  margin-bottom:15px;
+}
+
+/* 🔥 AVATAR */
+.avatar-text{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:#0d6efd;
+  color:white;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  font-size:42px;
+  font-weight:800;
+
+  margin:auto;
+  margin-bottom:15px;
+}
+
+.perfil-header h2{
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.perfil-header p{
+  color:#777;
+  margin:0;
+}
+
+/* 🔥 INFO */
+.perfil-info{
+  padding:25px 0;
+}
+
+.info-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  padding:15px 0;
+
+  border-bottom:1px solid #f0f0f0;
+}
+
+.info-item span{
+  color:#666;
+  font-weight:600;
+}
+
+.info-item strong{
+  color:#222;
+  font-size:16px;
+}
+
+/* 🔥 BOTONES */
+.acciones{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.btn-accion{
+  border:none;
+  background:#f1f4f9;
+
+  padding:18px;
+
+  border-radius:18px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  font-weight:700;
+  font-size:16px;
+
+  transition:.3s;
+
+  cursor:pointer;
+}
+
+.btn-accion:hover{
+  background:#0d6efd;
+  color:white;
+}
+
+.btn-accion i{
+  font-size:18px;
+}
+
+/* 🔥 MOBILE */
+@media(max-width:768px){
+
+  .perfil-card{
+    padding:20px;
+  }
+
+  .perfil-header h2{
+    font-size:24px;
+  }
+
+  .avatar-text,
+  .perfil-img{
+    width:100px;
+    height:100px;
+  }
+
+}
+
+/* 🔥 REGISTRO - FOTO */
+.perfil-header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+
+/* 🔥 REGISTRO - ALERTA */
+.alerta-perfil{
+  background:#fff3cd;
+  border:1px solid #ffe69c;
+  border-radius:18px;
+
+  padding:18px;
+  margin-bottom:25px;
+
+  display:flex;
+  gap:15px;
+}
+
+.alerta-icono{
+  font-size:28px;
+  color:#ff9800;
+}
+
+.alerta-contenido h5{
+  margin:0 0 8px;
+  font-weight:700;
+}
+
+.alerta-contenido p{
+  margin:0 0 12px;
+  color:#666;
+}
+
+#btnCompletarPerfil{
+  border:none;
+  background:#0d6efd;
+  color:white;
+
+  padding:10px 16px;
+  border-radius:12px;
+
+  font-weight:600;
+  cursor:pointer;
+}

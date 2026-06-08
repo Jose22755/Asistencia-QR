@@ -14,6 +14,9 @@ import {
 import { auth, db } from "../js/firestore.js";
 
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: "select_account"
+});
 
 // 🔥 ELEMENTOS
 const emailInput = document.getElementById("email");
@@ -138,12 +141,11 @@ async function login(email, password) {
 
       // 🔥 REDIRECCIÓN POR ROL
       if (rol === "estudiante") {
-        window.location.href = "index.html";
-      } else if (rol === "profesor") {
-        window.location.href = "profesor.html";
+window.location.replace("index.html");  
+    } else if (rol === "profesor") {
+window.location.replace("profesor.html");
       } else {
-        window.location.href = "index.html";
-      }
+window.location.replace("index.html");      }
 
     }, 1500);
 
@@ -201,21 +203,59 @@ async function loginGoogle() {
     const user = result.user;
 
     const ref = doc(db, "usuarios", user.uid);
-    const snap = await getDoc(ref);
 
-    if (!snap.exists()) {
-      await setDoc(ref, {
-        email: user.email,
-        rol: "estudiante",
-        creado: new Date()
-      });
-    }
+const snap = await getDoc(ref);
+
+const nombreGoogle =
+  user.displayName ||
+  user.email.split("@")[0] ||
+  "Usuario";
+
+const iniciales = nombreGoogle
+  .split(" ")
+  .map(p => p[0])
+  .slice(0, 2)
+  .join("")
+  .toUpperCase();
+
+// 🔥 SI EL USUARIO NO EXISTE
+if (!snap.exists()) {
+
+  await setDoc(ref, {
+
+    nombre: nombreGoogle,
+    email: user.email,
+
+    rol: "estudiante",
+
+    foto: user.photoURL || "",
+
+    iniciales,
+
+    creado: new Date()
+
+  });
+
+} else {
+
+  // 🔥 ACTUALIZAR FOTO Y NOMBRE GOOGLE
+  await setDoc(ref, {
+
+    nombre: nombreGoogle,
+
+    foto: user.photoURL || "",
+
+    iniciales
+
+  }, { merge: true });
+
+  // 🔥 ESPERAR ACTUALIZACIÓN
+await new Promise(resolve => setTimeout(resolve, 500));
+}
 
     Swal.fire("Bienvenido", "Login con Google exitoso", "success");
 
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 1500);
+window.location.replace("index.html");
 
   } catch (error) {
        console.log(error.code);

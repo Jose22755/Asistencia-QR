@@ -1,6 +1,7 @@
 // 🔥 IMPORTS FIREBASE
 import {
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
@@ -24,6 +25,9 @@ const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 const programaInput = document.getElementById("programa");
 const semestreInput = document.getElementById("semestre");
+const fotoInput = document.getElementById("fotoInput");
+const fotoPreview = document.getElementById("fotoPreview");
+const previewFoto = document.getElementById("previewFoto");
 
 
 // 🔥 MENSAJES ERROR
@@ -67,6 +71,8 @@ const reglasDocumento = {
   PAS: 9
 };
 
+// 🔥 FOTO BASE64
+let fotoBase64 = "";
 
 // 🔥 FUNCIONES
 function marcarError(input, mensaje = "Campo obligatorio") {
@@ -99,7 +105,7 @@ function validarCorreoInstitucional(email) {
 }
 
 function validarNombre(nombre) {
-  return nombre.trim().split(" ").length >= 2;
+  return nombre.trim().split(/\s+/).length >= 2;
 }
 
 function validarDocumento(doc) {
@@ -135,6 +141,7 @@ nombreInput.addEventListener("input", () => {
 tipoDocumentoInput.addEventListener("change", () => {
   documentoInput.value = "";
   documentoError.textContent = "";
+  documentoInput.classList.remove("input-success");
 });
 
 documentoInput.addEventListener("input", () => {
@@ -202,6 +209,16 @@ semestreInput.addEventListener("change", () => {
   semestreInput.classList.add("input-success");
 });
 
+// 🔥 ABRIR GALERÍA
+fotoPreview.addEventListener("click", () => {
+
+  fotoInput.click();
+
+});
+
+// 🔥 PREVIEW FOTO
+
+
 
 // 🔥 REGISTRAR
 async function registrar() {
@@ -219,6 +236,8 @@ async function registrar() {
 
   let hayError = false;
 
+
+
   if (!nombre) { marcarError(nombreInput); hayError = true; }
   if (!tipoDocumento) { marcarError(tipoDocumentoInput); hayError = true; }
   if (!documento) { marcarError(documentoInput); hayError = true; }
@@ -227,6 +246,7 @@ async function registrar() {
   if (!confirmPassword) { marcarError(confirmPasswordInput); hayError = true; }
   if (!programa) { marcarError(programaInput); hayError = true; }
   if (!semestre) { marcarError(semestreInput); hayError = true; }
+
 
   if (hayError) {
     Swal.fire("Error", "Completa todos los campos", "warning");
@@ -288,34 +308,77 @@ if (!resultado.empty) {
 btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Registrando...';
   try {
 
+    sessionStorage.setItem("registroEnProceso", "true");
+
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const user = cred.user;
 
-    await setDoc(doc(db, "usuarios", user.uid), {
-      nombre,
-      tipoDocumento,
-      documento,
-      email,
-      programa,
-      semestre,
-      rol: "estudiante",
-      creado: new Date()
-    });
+    const iniciales = nombre
+  .split(" ")
+  .map(p => p[0])
+  .slice(0, 2)
+  .join("")
+  .toUpperCase();
 
-    Swal.fire("Éxito", "Registro completado", "success");
+await setDoc(doc(db, "usuarios", user.uid), {
+  nombre,
+  tipoDocumento,
+  documento,
+  email,
+  programa,
+  semestre,
+  rol: "estudiante",
 
-    nombreInput.value = "";
-    tipoDocumentoInput.value = "";
-    documentoInput.value = "";
-    emailInput.value = "";
-    passwordInput.value = "";
-    confirmPasswordInput.value = "";
-    programaInput.value = "";
-    semestreInput.value = "";
+foto: fotoBase64 || "",
 
-    setTimeout(() => {
-      window.location.href = "login.html";
-    }, 1500);
+  iniciales,
+
+  creado: new Date()
+});
+
+await signOut(auth);
+
+sessionStorage.removeItem("registroEnProceso");
+
+// 🔥 LIMPIAR CAMPOS
+nombreInput.value = "";
+tipoDocumentoInput.value = "";
+documentoInput.value = "";
+emailInput.value = "";
+passwordInput.value = "";
+confirmPasswordInput.value = "";
+programaInput.value = "";
+semestreInput.value = "";
+fotoBase64 = "";
+fotoInput.value = "";
+previewFoto.src = "";
+previewFoto.style.display = "none";
+
+const icono = fotoPreview.querySelector("i");
+
+if (icono) {
+  icono.style.display = "block";
+}
+
+// 🔥 ESPERAR A QUE FIREBASE CIERRE SESIÓN
+setTimeout(() => {
+
+  Swal.fire({
+    icon: "success",
+    title: "Registro completado",
+    text: "Ahora inicia sesión",
+    timer: 1800,
+    showConfirmButton: false
+  });
+
+  // 🔥 REDIRIGIR AL LOGIN
+  setTimeout(() => {
+
+    window.location.replace("login.html");
+
+  }, 1800);
+
+}, 1000);
 
   } catch (error) {
 
@@ -338,6 +401,77 @@ btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Registra
   }
 
 }
+
+fotoInput.addEventListener("change", (e) => {
+
+  const archivo = e.target.files[0];
+
+  if (!archivo) return;
+
+  // 🔥 VALIDAR IMAGEN
+  if (!archivo.type.startsWith("image/")) {
+
+    Swal.fire(
+      "Error",
+      "Selecciona una imagen válida",
+      "error"
+    );
+
+    return;
+  }
+
+  // 🔥 VALIDAR TAMAÑO
+  if (archivo.size > 2 * 1024 * 1024) {
+
+    Swal.fire(
+      "Error",
+      "La imagen no debe superar 2MB",
+      "error"
+    );
+
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+
+    const img = new Image();
+
+    img.src = event.target.result;
+
+    img.onload = function() {
+
+      const canvas = document.createElement("canvas");
+
+      const size = 300;
+
+      canvas.width = size;
+      canvas.height = size;
+
+      const ctx = canvas.getContext("2d");
+
+      // 🔥 COMPRIMIR
+      ctx.drawImage(img, 0, 0, size, size);
+
+      fotoBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+      // 🔥 PREVIEW
+      previewFoto.src = fotoBase64;
+
+      previewFoto.style.display = "block";
+
+      fotoPreview.querySelector("i").style.display = "none";
+
+      console.log("Imagen comprimida ✅");
+
+    };
+
+  };
+
+  reader.readAsDataURL(archivo);
+
+});
 
 
 // 🔥 OJITO CONTRASEÑA

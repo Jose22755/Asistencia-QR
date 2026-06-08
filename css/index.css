@@ -1,0 +1,348 @@
+/* 🔥 RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* 🔥 BODY */
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:#f5f7fb;
+  color:#222;
+  overflow-x:hidden;
+}
+
+/* 🔥 OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  opacity:0;
+  visibility:hidden;
+  transition:.3s;
+  z-index:998;
+}
+
+.overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* 🔥 SIDEBAR */
+.sidebar{
+  position:fixed;
+  top:0;
+  left:-280px;
+  width:260px;
+  height:100vh;
+  background:#fff;
+  z-index:999;
+  transition:.3s ease;
+  box-shadow:5px 0 20px rgba(0,0,0,.08);
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+}
+
+.sidebar.active{
+  left:0;
+}
+
+/* 🔥 HEADER SIDEBAR */
+.sidebar-header{
+  padding:30px 20px;
+  text-align:center;
+  border-bottom:1px solid #eee;
+}
+
+.profile-img{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid #0d6efd;
+  margin-bottom:15px;
+}
+
+.sidebar-header h5{
+  font-weight:700;
+  margin-bottom:5px;
+  font-size:24px;
+}
+
+.sidebar-header p{
+  font-size:14px;
+  color:#777;
+  word-break:break-word;
+}
+
+/* 🔥 MENÚ */
+.menu{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:18px;
+  flex:1;
+}
+
+.menu a,
+.logout-btn{
+  width:100%;
+  text-decoration:none;
+  border:none;
+  background:#f1f4f9;
+  padding:16px;
+  border-radius:16px;
+  color:#222;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  transition:.3s;
+  cursor:pointer;
+  font-size:17px;
+}
+
+.menu a:hover,
+.logout-btn:hover{
+  background:#0d6efd;
+  color:#fff;
+  transform:translateX(3px);
+}
+
+.menu i{
+  font-size:20px;
+}
+
+/* 🔥 MAIN */
+.main-content{
+  width:100%;
+  min-height:100vh;
+  padding-bottom:40px;
+}
+
+/* 🔥 TOPBAR */
+.topbar{
+  width:100%;
+  height:75px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.menu-btn{
+  border:none;
+  background:transparent;
+  font-size:32px;
+  cursor:pointer;
+}
+
+.topbar h4{
+  margin:0;
+  font-size:30px;
+  font-weight:800;
+}
+
+.top-profile{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+/* 🔥 BIENVENIDA */
+.welcome{
+  padding:30px 22px 10px;
+}
+
+.welcome h2{
+  font-size:52px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.welcome p{
+  color:#666;
+  font-size:18px;
+}
+
+/* 🔥 BOTÓN QR */
+.scan-section{
+  padding:20px 22px;
+}
+
+.scan-btn{
+  width:100%;
+  border:none;
+  background:linear-gradient(135deg,#0d6efd,#0056d2);
+  color:white;
+  padding:22px;
+  border-radius:22px;
+  font-size:28px;
+  font-weight:700;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  transition:.3s;
+  box-shadow:0 10px 25px rgba(13,110,253,.25);
+}
+
+.scan-btn:hover{
+  transform:translateY(-2px);
+}
+
+.scan-btn i{
+  font-size:30px;
+}
+
+/* 🔥 CLASES */
+.classes{
+  padding:0 22px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+/* 🔥 TARJETAS */
+.class-card{
+  background:#fff;
+  border-radius:22px;
+  padding:24px;
+  box-shadow:0 5px 18px rgba(0,0,0,.05);
+  transition:.3s;
+}
+
+.class-card:hover{
+  transform:translateY(-4px);
+}
+
+.class-card h5{
+  font-size:34px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+
+.class-card p{
+  font-size:20px;
+  color:#666;
+  margin:0;
+}
+
+/* 🔥 DESKTOP */
+@media(min-width:768px){
+
+  .sidebar{
+    left:0;
+  }
+
+  .overlay{
+    display:none;
+  }
+
+  .main-content{
+    margin-left:260px;
+    width:calc(100% - 260px);
+  }
+
+  .menu-btn{
+    display:none;
+  }
+
+}
+
+/* 🔥 MOBILE */
+@media(max-width:767px){
+
+  .topbar h4{
+    font-size:20px;
+  }
+
+  .welcome{
+    padding:25px 18px 8px;
+  }
+
+  .welcome h2{
+    font-size:36px;
+  }
+
+  .welcome p{
+    font-size:16px;
+  }
+
+  .scan-section{
+    padding:18px;
+  }
+
+  .scan-btn{
+    font-size:18px;
+    padding:18px;
+    border-radius:18px;
+  }
+
+  .scan-btn i{
+    font-size:22px;
+  }
+
+  .classes{
+    padding:0 18px;
+  }
+
+  .class-card{
+    padding:20px;
+  }
+
+  .class-card h5{
+    font-size:22px;
+  }
+
+  .class-card p{
+    font-size:16px;
+  }
+
+}
+
+/* 🔥 CONTENEDOR FOTO */
+.profile-container{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+/* 🔥 AVATAR TEXTO */
+.avatar-text{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:#0d6efd;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:32px;
+  font-weight:800;
+  border:4px solid #0d6efd;
+}
+
+/* 🔥 TOPBAR AVATAR */
+.top-avatar{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:#0d6efd;
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:700;
+  font-size:18px;
+  overflow:hidden;
+}

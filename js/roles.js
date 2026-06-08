@@ -1,6 +1,9 @@
 // 🔥 roles.js
 
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   doc,
@@ -10,56 +13,82 @@ import {
 import { auth, db } from "../js/firestore.js";
 
 
-// 🔥 VERIFICAR SESIÓN Y ROL
+// 🔥 VERIFICAR SESIÓN
 onAuthStateChanged(auth, async (user) => {
 
   // ❌ NO LOGUEADO
   if (!user) {
-    window.location.href = "login.html";
+window.location.replace("./login.html");
     return;
   }
 
   try {
 
-    // 🔥 BUSCAR DATOS DEL USUARIO
     const ref = doc(db, "usuarios", user.uid);
+
     const snap = await getDoc(ref);
 
+    // ❌ SI NO EXISTE
     if (!snap.exists()) {
-      window.location.href = "login.html";
+
+      console.log("Usuario sin datos");
+
       return;
     }
 
-    const rol = snap.data().rol;
+    const datos = snap.data();
 
-    // 🔥 PÁGINA ACTUAL
-    const pagina = window.location.pathname;
+    // ❌ SIN ROL
+    if (!datos.rol) {
 
-    // 🔥 SI ESTÁ EN INDEX.HTML
-    if (pagina.includes("index.html")) {
+      console.log("Usuario sin rol");
 
-      if (rol !== "estudiante") {
-        window.location.href = "profesor.html";
-        return;
-      }
+      return;
+    }
+
+    const rol = datos.rol;
+
+    const pagina = window.location.pathname.split("/").pop();
+
+    // 🔥 VALIDAR RUTAS
+
+    if (pagina === "index.html" && rol !== "estudiante") {
+
+      window.location.href = "./profesor.html";
+      return;
 
     }
 
-    // 🔥 SI ESTÁ EN PROFESOR.HTML
-    if (pagina.includes("profesor.html")) {
+    if (pagina === "profesor.html" && rol !== "profesor") {
 
-      if (rol !== "profesor") {
-        window.location.href = "index.html";
-        return;
-      }
+window.location.replace("./index.html");
+      return;
 
     }
+
+    // ✅ MOSTRAR PÁGINA
+    document.body.style.display = "block";
 
   } catch (error) {
 
     console.log(error);
-    window.location.href = "login.html";
 
   }
 
 });
+
+
+// 🔥 LOGOUT
+const btnLogout = document.getElementById("btnLogout");
+
+if (btnLogout) {
+
+  btnLogout.addEventListener("click", async () => {
+
+    await signOut(auth);
+
+    window.location.replace("./login.html");
+
+  });
+
+}

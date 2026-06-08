@@ -23,7 +23,40 @@
 <div class="login-container">
 <div class="card-login card-registro">
 
+
+<div class="volver-container">
+  <a href="login.html" id="linkVolver">
+    <i class="bi bi-arrow-left"></i>
+    Volver
+  </a>
+</div>
+
   <h2 class="titulo">Registro Estudiante</h2>
+  
+  <!-- FOTO PERFIL -->
+<div class="foto-container">
+
+  <input
+    type="file"
+    id="fotoInput"
+    accept="image/*"
+    hidden
+  >
+
+  <div class="foto-preview" id="fotoPreview">
+
+    <i class="bi bi-camera-fill"></i>
+
+    <img id="previewFoto" src="">
+
+  </div>
+
+</div>
+
+<p class="texto-foto">
+  Agrega una foto de perfil
+</p>
+
 
   <!-- ROL -->
   <input type="text" value="Rol: Estudiante" disabled>
@@ -132,8 +165,7 @@
 
 </div>
 </div>
-
+<script type="module" src="../js/authGuard.js"></script>
 <script type="module" src="../js/registro.js"></script>
-
 </body>
 </html>

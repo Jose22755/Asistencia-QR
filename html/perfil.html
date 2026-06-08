@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Perfil | Asistencia QR</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/perfil.css">
+</head>
+
+<body>
+
+    <div class="container-perfil">
+
+        <!-- VOLVER -->
+        <div class="volver-container">
+            <a href="index.html" id="btnVolver">
+                <i class="bi bi-arrow-left"></i>
+                Volver
+            </a>
+        </div>
+
+        <!-- CARD PERFIL -->
+        <div class="perfil-card">
+
+            <div class="perfil-header">
+
+                <img id="fotoPerfil"
+                    class="perfil-img"
+                    style="display:none;">
+
+                <div id="avatarTexto" class="avatar-text">
+                    JP
+                </div>
+
+                <h2 id="nombreUsuario">
+                    Juan Pérez
+                </h2>
+
+                <p id="correoUsuario">
+                    correo@unicaribe.edu.co
+                </p>
+
+            </div>
+
+
+            <!-- ALERTA PERFIL INCOMPLETO -->  
+            <div id="alertaPerfil" class="alerta-perfil" style="display:none;">
+
+                <div class="alerta-icono">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+
+                <div class="alerta-contenido">
+
+                    <h5>Perfil incompleto</h5>
+
+                    <p>
+                    Completa tu información académica para acceder a todas las funcionalidades del sistema.
+                    </p>
+
+                    <button id="btnCompletarPerfil">
+                    Completar perfil
+                    </button>
+
+                </div>
+
+                </div>
+
+            <div class="perfil-info">
+
+                <div class="info-item">
+                    <span>Tipo Documento</span>
+                    <strong id="tipoDocumento">
+                        CC
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Documento</span>
+                    <strong id="documento">
+                        123456789
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Programa</span>
+                    <strong id="programa">
+                        Ingeniería Informática
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Semestre</span>
+                    <strong id="semestre">
+                        6
+                    </strong>
+                </div>
+
+                <div class="info-item">
+                    <span>Rol</span>
+                    <strong id="rol">
+                        Estudiante
+                    </strong>
+                </div>
+
+            </div>
+
+            <div class="acciones">
+
+                <button class="btn-accion" id="btnActualizar">
+                    <i class="bi bi-pencil-square"></i>
+                    Actualizar Datos
+                </button>
+
+                <button class="btn-accion" id="btnPassword">
+                    <i class="bi bi-key-fill"></i>
+                    Cambiar Contraseña
+                </button>
+
+                <button class="btn-accion" id="btnFoto">
+                    <i class="bi bi-camera-fill"></i>
+                    Cambiar Foto
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    <!-- 🔥 MODAL COMPLETAR PERFIL -->
+<div class="modal fade"
+     id="modalPerfil"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Completar Perfil
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Tipo Documento
+                    </label>
+
+                    <select
+                        id="tipoDocumentoInput"
+                        class="form-select">
+
+                        <option value="">
+                            Seleccione...
+                        </option>
+
+                        <option value="CC">
+                            Cédula de Ciudadanía
+                        </option>
+
+                        <option value="TI">
+                            Tarjeta de Identidad
+                        </option>
+
+                        <option value="CE">
+                            Cédula de Extranjería
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Documento
+                    </label>
+
+                    <input
+                        type="text"
+                        id="documentoInput"
+                        class="form-control">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Programa
+                    </label>
+
+<select
+    id="programaInput"
+    class="form-select">
+
+    <option value="">
+        Seleccione un programa...
+    </option>
+
+    <option value="Ingeniería Informática">
+        Ingeniería Informática
+    </option>
+
+    <option value="Ingeniería Industrial">
+        Ingeniería Industrial
+    </option>
+
+    <option value="Administración de Empresas">
+        Administración de Empresas
+    </option>
+
+    <option value="Contaduría Pública">
+        Contaduría Pública
+    </option>
+
+</select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Semestre
+                    </label>
+
+<select
+    id="semestreInput"
+    class="form-select">
+
+    <option value="">
+        Seleccione semestre...
+    </option>
+
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+
+</select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="btnGuardarPerfil">
+
+                    Guardar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <script type="module" src="../js/perfil.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+
+</html>

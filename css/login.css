@@ -321,4 +321,86 @@ select:invalid {
   transform: translateY(-50%) rotate(180deg);
 }
 
+/* 🔥 FOTO PERFIL */
 
+.foto-container{
+  display:flex;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.foto-preview{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:#f1f1f1;
+  border:3px dashed #ccc;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  position:relative;
+
+  transition:0.3s;
+}
+
+.foto-preview:hover{
+  border-color:#0d6efd;
+  transform:scale(1.03);
+}
+
+.foto-preview i{
+  font-size:35px;
+  color:#777;
+}
+
+#previewFoto{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+
+  display:none;
+
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+/* TEXTO DE LA FOTO */
+.texto-foto{
+  text-align:center;
+  color:#bdbdbd;
+  font-size:14px;
+  margin-top:-10px;
+  margin-bottom:20px;
+}
+
+
+/* VOLVER A LOGIN */
+.volver-container{
+  width: 100%;
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+#linkVolver{
+  text-decoration: none;
+  color: #13ae9c;
+  font-size: 15px;
+  font-weight: 600;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  transition: .3s;
+}
+
+#linkVolver:hover{
+  transform: translateX(-4px);
+}
