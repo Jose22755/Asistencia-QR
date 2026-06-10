@@ -224,3 +224,14 @@ body{
   font-weight:600;
   cursor:pointer;
 }
+
+/* COLOR ROJO BOTÓN ELIMINAR FOTO */
+.btn-danger-custom{
+  background:#dc3545;
+  color:white;
+}
+
+.btn-danger-custom:hover{
+  background:#bb2d3b;
+  color:white;
+}
